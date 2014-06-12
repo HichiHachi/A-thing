@@ -24,7 +24,9 @@ public class ShipMovement : MonoBehaviour {
 	}
 
 	void ShipRotation(){
-		Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		Vector3 mousePos = Input.mousePosition;//Camera.main.WorldToScreenPoint(Input.mousePosition);
+		mousePos.x -= Screen.width/2;
+		mousePos.y -= Screen.height/2;
 		Quaternion rot = Quaternion.LookRotation (Vector3.forward, (mousePos - ship.transform.position * 2.0f));
 		ship.transform.rotation = Quaternion.Lerp (ship.transform.rotation, rot, Time.deltaTime*maneuverability);
 	}
