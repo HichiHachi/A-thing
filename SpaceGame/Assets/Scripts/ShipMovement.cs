@@ -4,7 +4,7 @@ using System.Collections;
 public class ShipMovement : MonoBehaviour {
 
 	public GameObject ship;
-	float maneuverability = 0.8f;
+	float maneuverability = 1.8f;
 	Vector3 position;
 	Vector2 diff;
 	float distance;
@@ -20,7 +20,7 @@ public class ShipMovement : MonoBehaviour {
 	void Update () {
 		ShipRotation ();
 		MoveShip ();
-		Screen.showCursor = false;
+		//Screen.showCursor = false;
 	}
 
 	void ShipRotation(){
