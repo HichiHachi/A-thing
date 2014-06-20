@@ -4,13 +4,16 @@ using System.Collections;
 public class ShipMovement : MonoBehaviour {
 
 	public GameObject ship;
+	public GameObject stars;
 	float maneuverability = 1.8f;
 	Vector3 position;
 	Vector2 diff;
 	float distance;
-	float SlowDownSpeed = 0.001f;
+	float SlowDownSpeed = 0.002f;
 	float ForwardSpeed = 0.005f;
 	float velocity;
+	float MaxSpeed = 0.5f;
+	float lPan = 800;
 	// Use this for initialization
 	void Start () {
 	
@@ -20,6 +23,7 @@ public class ShipMovement : MonoBehaviour {
 	void Update () {
 		ShipRotation ();
 		MoveShip ();
+		SetStarLifeSpan ();
 		//Screen.showCursor = false;
 	}
 
@@ -33,13 +37,30 @@ public class ShipMovement : MonoBehaviour {
 
 	void MoveShip(){
 		if (Input.GetMouseButton (1)) {
-			velocity +=ForwardSpeed;
-			Debug.Log("RightClick");
+			if (velocity <= MaxSpeed) {
+				velocity += ForwardSpeed;
+			}
 		}
 		if (Input.GetMouseButton (0)) {
 			if (velocity > 0)velocity -= SlowDownSpeed;
 		}
 		ship.rigidbody2D.transform.position += ship.rigidbody2D.transform.up*velocity;
 		if(velocity>0)velocity -= 0.0001f;
+	}
+
+	void SetStarLifeSpan(){
+
+		if (velocity < MaxSpeed / 3) {
+						lPan = 800;
+				}
+		if (velocity >= MaxSpeed / 3 && velocity < (MaxSpeed / 3) * 2) {
+						lPan = 500;
+				}
+		if (velocity > (MaxSpeed / 3) * 2) {
+						lPan = 10;
+				}
+		Debug.Log ("ShipMovement " + lPan);
+		stars.GetComponent<particle> ().SetLifespan (lPan);
+	
 	}
 }
