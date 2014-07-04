@@ -60,7 +60,7 @@ public class ShipMovement : MonoBehaviour {
 		if (velocity > (MaxSpeed / 3) * 2) {
 						lPan = 10;
 				}
-		stars.GetComponent<particle> ().SetLifespan (lPan);
+		//stars.GetComponent<particle> ().SetLifespan (lPan);
 	
 	}
 }
