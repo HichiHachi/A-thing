@@ -29,5 +29,10 @@ public class Planet : MonoBehaviour {
 	void Update () {
 	}
 
+	void OnCollisionEnter2D(Collision2D col) {
+		Debug.Log ("Hit!!");
+		Destroy (col.gameObject);
+	}
+
 }
 	
