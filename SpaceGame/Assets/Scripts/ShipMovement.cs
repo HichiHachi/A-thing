@@ -29,6 +29,7 @@ public class ShipMovement : MonoBehaviour {
 			SetStarLifeSpan ();
 			} else {
 			ship.transform.GetComponent<SpriteRenderer>().enabled = false;
+			ship.transform.GetComponent<TrailRenderer>().enabled = false;
 		}
 		//Screen.showCursor = false;
 	}
