@@ -27,11 +27,14 @@ public class Planet : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		Debug.Log ("Update");
 	}
 
-	void OnCollisionEnter2D(Collision2D col) {
-		Debug.Log ("Hit!!");
-		Destroy (col.gameObject);
+	private void OnCollisionEnter2D(Collision2D coll)
+	{
+		if (coll.gameObject.tag == "Player") {
+			coll.gameObject.GetComponent<ShipMovement>().Die();
+				}
 	}
 
 }

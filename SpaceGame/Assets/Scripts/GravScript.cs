@@ -8,6 +8,8 @@ public class GravScript : MonoBehaviour {
 	float GravForce;
 	public GUITexture HUDtexture;
 	public GUIText HUDtext;
+	Vector2 dir;
+
 
 	// Use this for initialization
 	void Start () {
@@ -26,7 +28,10 @@ public class GravScript : MonoBehaviour {
 	{
 		float Distance = Vector3.Distance (col.gameObject.transform.position, this.transform.parent.gameObject.transform.position);
 		GravForce = -ConstG * (ObjectMass/(Distance*Distance));
-		col.gameObject.transform.position = Vector3.MoveTowards (col.gameObject.transform.position, this.transform.parent.gameObject.transform.position, GravForce);
+		//col.gameObject.transform.position = Vector3.MoveTowards (col.gameObject.transform.position, this.transform.parent.gameObject.transform.position, GravForce);
+		dir = col.gameObject.transform.position - this.transform.parent.gameObject.transform.position;
+		dir = dir.normalized;
+		col.gameObject.transform.rigidbody2D.AddForce(-dir * GravForce);
 		HUDtext.enabled = true;
 		HUDtexture.enabled = true;
 	}
@@ -41,8 +46,10 @@ public class GravScript : MonoBehaviour {
 	{
 		float Distance = Vector3.Distance (col.gameObject.transform.position, this.transform.parent.gameObject.transform.position);
 		GravForce = -ConstG * (ObjectMass/(Distance*Distance));
-		col.gameObject.transform.position = Vector3.MoveTowards (col.gameObject.transform.position, this.transform.parent.gameObject.transform.position, GravForce);
-
+		//col.gameObject.transform.position = Vector3.MoveTowards (col.gameObject.transform.position, this.transform.parent.gameObject.transform.position, GravForce);
+		dir = col.gameObject.transform.position - this.transform.parent.gameObject.transform.position;
+		dir = dir.normalized;
+		col.gameObject.transform.rigidbody2D.AddForce(-dir * GravForce*10);
 		float gForce = Mathf.Round (GravForce * 100f);
 		if (gForce < 15)
 						HUDtext.color = Color.blue;

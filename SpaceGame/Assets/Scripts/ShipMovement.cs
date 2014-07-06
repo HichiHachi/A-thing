@@ -15,6 +15,7 @@ public class ShipMovement : MonoBehaviour {
 	float MaxSpeed = 0.5f;
 	float lPan = 800;
 	public Vector3 mousePos;
+	bool Alive = true;
 	// Use this for initialization
 	void Start () {
 	
@@ -22,9 +23,13 @@ public class ShipMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		ShipRotation ();
-		MoveShip ();
-		SetStarLifeSpan ();
+		if (Alive) {
+			ShipRotation ();
+			MoveShip ();
+			SetStarLifeSpan ();
+			} else {
+			ship.transform.GetComponent<SpriteRenderer>().enabled = false;
+		}
 		//Screen.showCursor = false;
 	}
 
@@ -40,10 +45,12 @@ public class ShipMovement : MonoBehaviour {
 		if (Input.GetMouseButton (1)) {
 			if (velocity <= MaxSpeed) {
 				velocity += ForwardSpeed;
+				ship.transform.GetComponent<TrailRenderer>().enabled = true;
 			}
 		}
 		if (Input.GetMouseButton (0)) {
 			if (velocity > 0)velocity -= SlowDownSpeed;
+			if (velocity <=0.01)ship.transform.GetComponent<TrailRenderer>().enabled = false;
 		}
 		ship.rigidbody2D.transform.position += ship.rigidbody2D.transform.up*velocity;
 		if(velocity>0)velocity -= 0.0001f;
@@ -62,5 +69,13 @@ public class ShipMovement : MonoBehaviour {
 				}
 		//stars.GetComponent<particle> ().SetLifespan (lPan);
 	
+	}
+
+	public void Die()
+	{
+		Alive = false;
+		ship.transform.GetComponent<ParticleSystem> ().Play ();
+		Destroy (gameObject, 5);
+
 	}
 }
