@@ -61,5 +61,12 @@ public class GravScript : MonoBehaviour {
 		HUDtext.text = ("\tGForce: " + gForce);
 	}
 
+	public float GetGForce(Vector2 pos)
+	{
+		float Distance = Vector3.Distance (pos, this.transform.parent.gameObject.transform.position);
+		float GForce = -ConstG * (ObjectMass/(Distance*Distance));
+		return GForce;
+	}
+
 
 }
