@@ -95,7 +95,7 @@ public class ShipMovement : MonoBehaviour {
 	void PredictPath()
 	{
 
-		int vertices = 60;
+		int vertices = 120;
 		Vector2 momentum = ship.transform.rigidbody2D.velocity;
 		Vector2 pos = ship.transform.position;
 		Vector2 last = ship.transform.position;
@@ -105,16 +105,38 @@ public class ShipMovement : MonoBehaviour {
 		//ship.transform.GetComponent<LineRenderer> ().SetPosition (0, ship.transform.position);
 		for (int i = 0; i<vertices; i++) {
 			
-			ship.transform.GetComponent<LineRenderer> ().SetPosition (0, ship.transform.position);
-			float temp = GameObject.Find("Gravity").GetComponent<GravScript> ().GetGForce (pos);
-			G = new Vector2(temp,temp);
-			momentum+=G;
-			pos=momentum*i;
+			//ship.transform.GetComponent<LineRenderer> ().SetPosition (0, ship.transform.position);
+			//float temp = GameObject.Find("Gravity").GetComponent<GravScript> ().GetGForce (pos);
+			//G = new Vector2(-temp,-temp);
+			//momentum+=G;
+		/*	pos=momentum*i;
 			ship.transform.GetComponent<LineRenderer>().SetPosition(i,pos);
-			last = pos;
+			last = pos;*/
+			float temp = GameObject.Find("Gravity").GetComponent<GravScript> ().GetGForce (pos);
+			G = new Vector2(-temp,-temp);
+			momentum+=G;
+			pos+=momentum;
+
+			Vector2 traj = getTrajectoryPoint(pos,momentum, i , last);
+			ship.transform.GetComponent<LineRenderer>().SetPosition(i,traj);
+			last = traj;
 		}
 
 
 
+	}
+
+	Vector2 getTrajectoryPoint( Vector2 startingPosition, Vector2 startingVelocity, float n, Vector2 last)
+	{
+		//velocity and gravity are given per second but we want time step values here
+		float t = 1/60.0f; // seconds per time step (at 60fps)
+		Vector2 stepVelocity = t * startingVelocity; // m/s
+		float temp = GameObject.Find("Gravity").GetComponent<GravScript> ().GetGForce (last);
+		G = new Vector2(temp*100,temp*100);
+
+		Vector2 stepGravity = t * t * G; // m/s/s
+		Vector2 calcTraj = startingPosition + n * stepVelocity + 0.5f * (n*n+n) * stepGravity;
+		calcTraj += -G;
+		return calcTraj;
 	}
 }
